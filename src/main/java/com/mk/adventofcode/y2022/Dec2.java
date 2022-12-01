@@ -6,13 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import java.util.List;
 
-import static com.mk.adventofcode.utility.ArrayUtility.getSmallestIntIndex;
-
 @SpringBootApplication
-public class Dec1 {
+public class Dec2 {
 
 	private static final int YEAR = 2022;
-	private static final int DAY = 1;
+	private static final int DAY = 2;
 
 	public static void main(String[] args) throws IOException {
 		List<String> exampleLines = FileReaderUtility.getLinesFromFile(YEAR, DAY, true);
@@ -36,50 +34,12 @@ public class Dec1 {
 	}
 
 	private static void part2(List<String> lines) {
-		int[] max = new int[]{0,0,0};
-		int caloriesWithElf = 0;
 
-		for (String line: lines) {
-			if(line.trim().length()==0) {
-				for (int i = 0; i < max.length; i++) {
-
-					int indexOfSmallestCalory = getSmallestIntIndex(max);
-					if (caloriesWithElf > max[indexOfSmallestCalory]) {
-						max[indexOfSmallestCalory] = caloriesWithElf;
-						break;
-					}
-
-				}
-
-				caloriesWithElf = 0;
-			} else {
-				int calory = Integer.parseInt(line);
-				caloriesWithElf = caloriesWithElf + calory;
-			}
-
-		}
-		int output = 0;
-		for (int i = 0; i < max.length; i++) {
-			output = output+ max[i];
-		}
-		System.out.println(output);
 
 	}
 
 	private static void part1(List<String> lines) {
-		int max = 0;
-		int caloriesWithElf = 0;
-		for (String line: lines) {
-			if(line.trim().length()==0) {
-				max = Math.max(max, caloriesWithElf);
-				caloriesWithElf = 0;
-			} else {
-				int calory = Integer.parseInt(line);
-				caloriesWithElf = caloriesWithElf + calory;
-			}
 
-		}
-		System.out.println(max);
 	}
 
 
