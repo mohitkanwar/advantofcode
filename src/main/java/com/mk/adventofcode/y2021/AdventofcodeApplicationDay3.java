@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class AdventofcodeApplicationDay3 {
@@ -15,29 +16,68 @@ public class AdventofcodeApplicationDay3 {
 	public static void main(String[] args) throws IOException {
 		List<String> lines = FileReaderUtility.getLinesFromFile(2021,3,true);
 //		List<String> lines = FileReaderUtility.getLinesFromFile(2021,3);
+		System.out.println("Part 1");
+		System.out.println("------");
 		part1(lines);
+		System.out.println("======================================================");
+		System.out.println("Part 2");
+		System.out.println("------");
 		part2(lines);
 	}
 
 	private static void part2(List<String> lines) {
-		int lifeSupportRate,oxygenRate = 0,Co2Rate = 0;
-		Set<String> selectedNumbers = new HashSet<>();
-		selectedNumbers.addAll(lines);
+		int oxygenGeneratorRating = 0;
+		int CO2ScrubberRating = 0;
 
-		int size = lines.get(0).length();
+		int wordLength = lines.get(0).length();
+		int[] oneCounts = new int[wordLength];
+		for(int i=0; i<wordLength; i++) {
+			oneCounts[i] = 0;
 
-		while (selectedNumbers.size()>1){
-			for(int i = 0; i< size; i++) {
-				selectedNumbers = calculateOxygen(i,size, selectedNumbers);
-				if(selectedNumbers.size() == 1){
-					break;
+
+			for (int j = 0; j < lines.size(); j++) {
+				String word = lines.get(j);
+				if(word.charAt(i)=='1') {
+					oneCounts[i]++;
 				}
 			}
 		}
-		Integer.parseInt(selectedNumbers.stream().findFirst().get(),2);
+		int[] mostCommonBit = new int[wordLength];
+		for (int i = 0; i < wordLength; i++) {
+			mostCommonBit[i] = oneCounts[i] >= (lines.size()/2) ? 1 : 0;
+		}
+		String oxygenGenRating = getOxygenGeneratorRating(lines, mostCommonBit);
 
-		lifeSupportRate = oxygenRate * Co2Rate;
-		System.out.println(oxygenRate);
+		System.out.println(oxygenGenRating);
+		int lifeSupportRating = oxygenGeneratorRating * CO2ScrubberRating;
+
+
+	}
+
+	private static String getOxygenGeneratorRating(List<String> lines, int[] mostCommonBit) {
+		List<String> linesCopy = List.copyOf(lines);
+		for(int i=0; i<mostCommonBit.length; i++) {
+			int finalI = i;
+			List<String> linesCopy2 = linesCopy.stream()
+					.filter(word ->{
+								boolean selected = word.charAt(finalI) == mostCommonBit[finalI];
+								if (selected) {
+									System.out.println(word);
+								} else {
+									System.out.println(word.charAt(finalI));
+									System.out.println(mostCommonBit[finalI]);
+								}
+								return selected;
+							}
+							)
+					.collect(Collectors.toList());
+			System.out.println(linesCopy2.size());
+			if (linesCopy2.size() == 1) {
+				return linesCopy2.get(0);
+			}
+		}
+
+		return null;
 	}
 
 	private static Set<String> calculateOxygen(int i, int size, Set<String> selectedNumbers) {
@@ -90,8 +130,8 @@ public class AdventofcodeApplicationDay3 {
 			epsilonRate += String.valueOf(rate[i]==1?0:1);
 		}
 
-		int gamma = Integer.parseInt(String.valueOf(gammaRate), 2);
-		int eps = Integer.parseInt(String.valueOf(epsilonRate), 2);
+		int gamma = Integer.parseInt(gammaRate, 2);
+		int eps = Integer.parseInt(epsilonRate, 2);
 		System.out.println(eps*gamma);
 	}
 

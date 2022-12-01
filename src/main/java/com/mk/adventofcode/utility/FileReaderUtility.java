@@ -19,7 +19,8 @@ public class FileReaderUtility {
     }
 
     public static List<String> getLinesFromFile(int year,int day,boolean isExample) throws IOException {
-        try (Stream<String> stream = Files.lines(Paths.get("/Users/mohitk/projects/personal/adventofcode/src/main/resources/static/"+year+"/day"+day+(isExample?"-e":"")+".txt"))) {
+
+        try (Stream<String> stream = Files.lines(Paths.get(FileReaderUtility.class.getResource("/static/"+year+"/day"+day+(isExample?"-e":"")+".txt").getPath()))) {
             return stream.collect(Collectors.toList());
 
         }catch (IOException e) {
@@ -35,7 +36,7 @@ public class FileReaderUtility {
     }
 
     public static List<Integer> getIntegersFromFile(int year,int day,boolean isExample) throws IOException {
-        try (Stream<String> stream = Files.lines(Paths.get("/Users/mohitk/projects/personal/adventofcode/src/main/resources/static/"+year+"/day"+day+(isExample?"-e":"")+".txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get(FileReaderUtility.class.getResource("/static/"+year+"/day"+day+(isExample?"-e":"")+".txt").getPath()))) {
             return stream.map(Integer::parseInt).collect(Collectors.toList());
 
         }catch (IOException e) {
